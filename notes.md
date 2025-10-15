@@ -151,11 +151,17 @@ config
 2. testrun with toy data: DONE
 3. writer, test with toy data to file DONE
 4. write real func; compute real colors and stringbuffers, use mod for index to check DONE
-4. rewrite data to be uint8_t, different blockdefs for att, conv
-5. math
-6. hsv wheel colors, as premade strings
-7. run with real data
-
+5. rewrite data to be uint8_t, different data attributes for conv/attr DONE
+6. fix demoloop and test DONE
+7. write newtonloop
+  .compute xvals
+  .handle changing size
+  .loop over
+    *step
+    *check roots, zero prox, outofbound
+  .record results
+8. test frfr
+9. swaggout
 
 
 

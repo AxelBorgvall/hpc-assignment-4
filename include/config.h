@@ -15,7 +15,7 @@
 #define BAILOUT_MAG 1e10
 #define BAILOUT_NORM_SQ 1e-6       // Squared norm for closeness to origin
 #define MAX_COLOR_VALUE 255
-#define BLOCKSIZE 10000
+#define BLOCKSIZE 10
 
 // Data type typedefs
 typedef uint8_t TYPE_ATTR; 

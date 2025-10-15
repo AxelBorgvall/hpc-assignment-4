@@ -83,8 +83,8 @@ int writer_func(void *arg){
 
     //fill string buffers
     for (size_t i = 0; i < block->size; ++i) {
-      int aidx = ((int)block->data[i]) % MAX_COLOR_VALUE; // demo mapping
-      int cidx = ((int)block->data[i]) % MAX_ITERATIONS;
+      int aidx = ((int)block->att_data[i]); // demo mapping
+      int cidx = ((int)block->con_data[i]);
       memcpy(pa,attractor_strings[aidx],STRING_LENGTH);
       memcpy(pc, convergence_strings[cidx],STRING_LENGTH);
       pa+=STRING_LENGTH;
@@ -94,7 +94,6 @@ int writer_func(void *arg){
     *pa++='\n';
     *pc++='\n';
     //fwrite to file
-    printf("writing: %.*s\n", (int)(pa - attbuf), attbuf);
     fwrite(attbuf,1,pa-attbuf,att_fp);
     fwrite(convbuf, 1, pc-convbuf, conv_fp);
 
@@ -106,7 +105,6 @@ int writer_func(void *arg){
     mtx_unlock(&lock);
 
   }
-  printf("freing\n");
   free(convbuf);
   free(attbuf);
 

@@ -33,9 +33,12 @@ int demo_loop(void *arg) {
     }
 
     // fill buffer
-    double start_val = block->block_index;
-    for (size_t i = 0; i < block->size; ++i)
-      block->data[i] = start_val + i;
+    TYPE_CONV start_val_con = block->block_index;
+    TYPE_ATTR start_val_att = block->block_index;
+    for (size_t i = 0; i < block->size; ++i){
+      block->att_data[i] = start_val_att + i;
+      block->con_data[i] = start_val_con + i;
+    }
 
     // random sleep 100–600 ms
     int ms = (rand() % 500 + 100);
@@ -45,7 +48,6 @@ int demo_loop(void *arg) {
     // mark READY and signal writer
     mtx_lock(&lock);
     atomic_store(&block->state, READY);
-    printf("thread nr %d just finished row %d\n",targ->thread_id,block->block_index);
     cnd_signal(&cond);
     mtx_unlock(&lock);
   }

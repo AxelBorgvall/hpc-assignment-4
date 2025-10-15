@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
       degree_set = true;
     }
   }
-  total_blocks=l;
+  total_blocks=l;//CHANGE THIS
   if (!degree_set || d < 1 ) {
     fprintf(stderr, "Error: Degree must be provided and between 1 and 9\n");
     exit(1);
@@ -102,10 +102,12 @@ int main(int argc, char *argv[]) {
   snprintf(att_file, sizeof(att_file), "newton_attractors_x%d.ppm", d);
   snprintf(conv_file, sizeof(conv_file), "newton_convergence_x%d.ppm", d);
 
-  printf("threads: %d, rows: %d, degree: %d, buffers: %d",n_threads,total_blocks,d,n_buffers);
 
   mtx_init(&lock,mtx_plain);
   cnd_init(&cond);
+
+  atomic_init(&block_counter, 0);
+  atomic_init(&write_idx, 0);
 
   // allocate buffers
   buffers=malloc(n_buffers*sizeof(BlockBuffer));
