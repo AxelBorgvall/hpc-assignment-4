@@ -70,6 +70,8 @@ int writer_func(void *arg){
           mtx_unlock(&lock);
           fclose(att_fp);
           fclose(conv_fp);
+          free(convbuf); 
+          free(attbuf);
           return 0; // done
         }
         cnd_wait(&cond, &lock);
@@ -94,6 +96,12 @@ int writer_func(void *arg){
     *pa++='\n';
     *pc++='\n';
     //fwrite to file
+		/* diagnostics
+    fwrite(attbuf, 1, pa - attbuf, stdout);
+    fputc('\n', stdout);
+    fwrite(convbuf, 1, pc - convbuf, stdout);
+    fputc('\n', stdout);
+		*/
     fwrite(attbuf,1,pa-attbuf,att_fp);
     fwrite(convbuf, 1, pc-convbuf, conv_fp);
 
@@ -105,9 +113,6 @@ int writer_func(void *arg){
     mtx_unlock(&lock);
 
   }
-  free(convbuf);
-  free(attbuf);
-
 }
 
 

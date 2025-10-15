@@ -154,11 +154,11 @@ config
 5. rewrite data to be uint8_t, different data attributes for conv/attr DONE
 6. fix demoloop and test DONE
 7. write newtonloop
-  .compute xvals
-  .handle changing size
+  .compute xvals DONE
+  .handle changing size DONE
   .loop over
-    *step
-    *check roots, zero prox, outofbound
+    *step DONE
+    *check roots, zero prox, outofbound DONE
   .record results
 8. test frfr
 9. swaggout

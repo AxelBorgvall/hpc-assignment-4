@@ -7,7 +7,8 @@
 
 #include "config.h"
 
-// Optimized complex operations for Newton iterations
+void generate_block_points(uint64_t start_idx, uint64_t end_idx, _Complex double *points);
+// functions for complex doubles
 _Complex double complex_pow(_Complex double z, int n);
 bool is_bailout(_Complex double z);
 bool is_close_to_origin(_Complex double z);

@@ -58,5 +58,5 @@ endif
 
 
 frm:
-	rm newton_convergence_x4.ppm
-	rm newton_attractors_x4.ppm
+	rm newton_convergence_x*.ppm
+	rm newton_attractors_x*.ppm

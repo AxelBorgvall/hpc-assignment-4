@@ -13,9 +13,9 @@
 #define EPS_SQR 1e-6
 #define MAX_ITERATIONS 128
 #define BAILOUT_MAG 1e10
-#define BAILOUT_NORM_SQ 1e-6       // Squared norm for closeness to origin
 #define MAX_COLOR_VALUE 255
-#define BLOCKSIZE 10
+#define BLOCKSIZE 10000
+#define WINDOWSIZE 2.0
 
 // Data type typedefs
 typedef uint8_t TYPE_ATTR; 
@@ -27,7 +27,7 @@ typedef enum { FREE, FILLING, READY, WRITING } BlockState;
 typedef struct {
     TYPE_ATTR *att_data;
     TYPE_CONV *con_data;
-    size_t size;
+    uint32_t size;
     atomic_int state;
     int block_index;
 } BlockBuffer;
@@ -50,10 +50,12 @@ extern int total_blocks;
 extern mtx_t lock;
 extern cnd_t cond;
 
-//arguments
+//arguments and dependents
 extern int n_threads;
 extern int l;
 extern int d;
+extern uint64_t n_points;
+extern double step;
 
 extern double newton_c1;
 extern double newton_c2;

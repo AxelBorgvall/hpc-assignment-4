@@ -25,6 +25,9 @@ int n_buffers;
 int l;
 int d;
 int n_threads;
+uint64_t n_points;
+double step;
+
 
 double newton_c1;
 double newton_c2;
@@ -34,7 +37,7 @@ double delta_arg_inv;
 char att_file[40];
 char conv_file[40];
 
-char *attractor_strings[NUM_COLORS_MAX]={"127 63 63 ","125 127 63 ","63 127 68 ","63 120 127 ","72 63 127 ","127 63 116 ","127 76 63 ","112 127 63 ","63 127 81 ","63 107 127 ","85 63 127 ","127 63 103 ","127 90 63 ","98 127 63 ","63 127 94 ","63 94 127 ","98 63 127 ","127 63 90 ","127 103 63 ","85 127 63 ","63 127 107 ","63 81 127 ","112 63 127 ","127 63 76 ","127 116 63 ","72 127 63 ","63 127 120 ","63 68 127 ","125 63 127 "};
+char *attractor_strings[NUM_COLORS_MAX]={"127 63  63  ","125 127 63  ","63  127 68  ","63  120 127 ","72  63  127 ","127 63  116 ","127 76  63  ","112 127 63  ","63  127 81  ","63  107 127 ","85  63  127 ","127 63  103 ","127 90  63  ","98  127 63  ","63  127 94  ","63  94  127 ","98  63  127 ","127 63  90  ","127 103 63  ","85  127 63  ","63  127 107 ","63  81  127 ","112 63  127 ","127 63  76  ","127 116 63  ","72  127 63  ","63  127 120 ","63  68  127 ","125 63  127 "};
 char *convergence_strings[MAX_ITERATIONS];
 
 BlockBuffer *buffers=NULL;
@@ -85,17 +88,22 @@ int main(int argc, char *argv[]) {
       degree_set = true;
     }
   }
-  total_blocks=l;//CHANGE THIS
+
   if (!degree_set || d < 1 ) {
     fprintf(stderr, "Error: Degree must be provided and between 1 and 9\n");
     exit(1);
   }
 
   //initializing variables------------------------------------------------------------------
+  n_points=(uint64_t)l*l;
+  if (n_points%BLOCKSIZE==0) total_blocks=n_points/BLOCKSIZE;
+  else total_blocks=n_points/BLOCKSIZE+1;
+  step=(double)2*WINDOWSIZE / l;
+  
   newton_c1 = ((double)d - 1.0) / (double)d;
-  newton_c2= 1/((double)d);
-  delta_arg=2*M_PI / d;
-  delta_arg_inv=d/(2*M_PI);
+  newton_c2= (double)1/(d);
+  delta_arg=(double)2*M_PI / d;
+  delta_arg_inv=(double)d/(2*M_PI);
 
   //set n_buffers and filenames
   n_buffers=n_threads+2;
@@ -119,13 +127,17 @@ int main(int argc, char *argv[]) {
     buffers[i].block_index=-1;
 
   }
+
+  printf("d: %d  l: %d   t:%d\n",d,l,n_threads);
+  printf("delta_arg: %f, delta_arg_inv: %f\n",delta_arg/M_PI,delta_arg_inv*M_PI);
+
   //launching threads------------------------------------------------------------------------
   // launch compute threads
   thrd_t *threads = malloc(n_threads * sizeof(thrd_t));
   ThreadArg *args = malloc(n_threads * sizeof(ThreadArg));
   for (int i = 0; i < n_threads; ++i) {
     args[i].thread_id = i;
-    thrd_create(&threads[i], demo_loop, &args[i]);
+    thrd_create(&threads[i], newton_loop, &args[i]);
   }
 
   // launch writer thread
