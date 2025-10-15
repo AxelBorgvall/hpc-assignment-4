@@ -128,8 +128,6 @@ int main(int argc, char *argv[]) {
 
   }
 
-  printf("d: %d  l: %d   t:%d\n",d,l,n_threads);
-  printf("delta_arg: %f, delta_arg_inv: %f\n",delta_arg/M_PI,delta_arg_inv*M_PI);
 
   //launching threads------------------------------------------------------------------------
   // launch compute threads

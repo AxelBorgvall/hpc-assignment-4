@@ -6,5 +6,7 @@ vc.py
 la.py
 lc.py
 con.py
+newton_convergence_x*.png
+newton_attractors_x*.png
 comp.py
 .aider*

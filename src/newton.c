@@ -107,10 +107,16 @@ int newton_loop(void *arg){
           break;
         }
         if (is_bailout(x)||is_close_to_origin(x)){
-          block->con_data[p_ind]=i+1;
+          block->con_data[p_ind]=MAX_ITERATIONS-1;
           block->att_data[p_ind]=NUM_COLORS_MAX-1;
           break;
         }
+        if (i==MAX_ITERATIONS-1){
+          block->con_data[p_ind]=MAX_ITERATIONS-1;
+          block->att_data[p_ind]=NUM_COLORS_MAX-1;
+          break;
+        }
+        
       }
     }
 
