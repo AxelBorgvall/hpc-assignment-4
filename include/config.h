@@ -9,8 +9,9 @@
 
 // Shared configuration constants
 #define EPSILON 1e-3
+#define EPS_SQR 1e-6
 #define MAX_ITERATIONS 128
-#define BAILOUT_REAL_IMAG 1e10
+#define BAILOUT_MAG 1e10
 #define BAILOUT_NORM_SQ 1e-6       // Squared norm for closeness to origin
 #define MAX_COLOR_VALUE 255
 #define BLOCKSIZE 10000
@@ -65,8 +66,12 @@ extern int n_threads;
 extern int l;
 extern int d;
 
+extern double newton_c1;
+extern double newton_c2;
+
 //blocks
 extern _Complex double *roots;
+  
 extern BlockBuffer *buffers;
 extern int n_buffers;
 

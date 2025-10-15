@@ -27,6 +27,9 @@ int l;
 int d;
 int n_threads;
 
+double newton_c1;
+double newton_c2;
+
 char att_file[40];
 char conv_file[40];
 
@@ -95,6 +98,10 @@ int main(int argc, char *argv[]) {
     fprintf(stderr, "Error: Degree must be provided and between 1 and 9\n");
     exit(1);
   }
+
+  newton_c1 = ((double)d - 1.0) / (double)d;
+  newton_c2= 1/((double)d);
+
   //set n_buffers and filenames
   n_buffers=n_threads+2;
   snprintf(att_file, sizeof(att_file), "newton_attractors_x%d.ppm", d);
