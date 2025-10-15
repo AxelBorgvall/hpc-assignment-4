@@ -68,6 +68,8 @@ extern int d;
 
 extern double newton_c1;
 extern double newton_c2;
+extern double delta_arg;
+extern double delta_arg_inv;
 
 //blocks
 extern _Complex double *roots;
@@ -79,10 +81,5 @@ extern int n_buffers;
 extern char att_file[40];   // buffer large enough to hold the formatted string
 extern char conv_file[40];
 
-//temporary demo variables
-extern char *output_str;
-extern size_t output_capacity;
-extern size_t output_len;
-extern size_t row_size;
 
 #endif // CONFIG_H

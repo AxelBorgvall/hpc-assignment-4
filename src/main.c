@@ -4,13 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <threads.h>
+#include <math.h>
 
-#include "../include/complex_utils.h"
 #include "../include/config.h"
 #include "../include/newton.h"
 #include "../include/ppm_writer.h"
-#include "../include/roots.h"
-#include "../include/thread_utils.h"
 
 // Global variables visible to all threads
 
@@ -29,6 +27,8 @@ int n_threads;
 
 double newton_c1;
 double newton_c2;
+double delta_arg;
+double delta_arg_inv;
 
 char att_file[40];
 char conv_file[40];
@@ -37,14 +37,6 @@ char *attractor_strings[NUM_COLORS_MAX]={"127 63 63 ","125 127 63 ","63 127 68 "
 char *convergence_strings[MAX_ITERATIONS];
 
 BlockBuffer *buffers = NULL;
-int n_threads;
-
-//demo variables
-size_t row_size = 8;//Change (obviously)
-char *output_str = NULL;
-size_t output_capacity = 0;
-size_t output_len = 0;
-
 
 int main(int argc, char *argv[]) {
 
@@ -101,6 +93,8 @@ int main(int argc, char *argv[]) {
 
   newton_c1 = ((double)d - 1.0) / (double)d;
   newton_c2= 1/((double)d);
+  delta_arg=2*M_PI / d;
+  delta_arg_inv=d/(2*M_PI);
 
   //set n_buffers and filenames
   n_buffers=n_threads+2;
@@ -147,7 +141,6 @@ int main(int argc, char *argv[]) {
   free(buffers);
   free(threads);
   free(args);
-  free(output_str);
   free_convergence();
   mtx_destroy(&lock);
   cnd_destroy(&cond);

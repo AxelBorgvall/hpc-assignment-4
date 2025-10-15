@@ -1,10 +1,7 @@
 #ifndef NEWTON_H
 #define NEWTON_H
 
-#include <complex.h>
-
 #include "config.h"
-#include "roots.h"
 
 int demo_loop(void *arg);
 
