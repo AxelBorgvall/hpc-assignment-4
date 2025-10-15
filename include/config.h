@@ -8,6 +8,7 @@
 #include <string.h>
 
 // Shared configuration constants
+#define _USE_MATH_DEFINES
 #define EPSILON 1e-3
 #define EPS_SQR 1e-6
 #define MAX_ITERATIONS 128
@@ -22,26 +23,14 @@ typedef uint8_t TYPE_CONV;
 
 typedef enum { FREE, FILLING, READY, WRITING } BlockState;
 //struct defintions
+
 typedef struct {
-    _Complex double *data;
+    TYPE_ATTR *att_data;
+    TYPE_CONV *con_data;
     size_t size;
     atomic_int state;
     int block_index;
 } BlockBuffer;
-
-typedef struct {
-    TYPE_ATTR *data;
-    size_t size;
-    atomic_int state;
-    int block_index;
-} AttrBuffer;
-
-typedef struct {
-    TYPE_CONV *data;
-    size_t size;
-    atomic_int state;
-    int block_index;
-} ConvBuffer;
 
 typedef struct {
     int thread_id;

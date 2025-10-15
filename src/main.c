@@ -1,4 +1,5 @@
 
+#include <stdatomic.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,10 +37,10 @@ char conv_file[40];
 char *attractor_strings[NUM_COLORS_MAX]={"127 63 63 ","125 127 63 ","63 127 68 ","63 120 127 ","72 63 127 ","127 63 116 ","127 76 63 ","112 127 63 ","63 127 81 ","63 107 127 ","85 63 127 ","127 63 103 ","127 90 63 ","98 127 63 ","63 127 94 ","63 94 127 ","98 63 127 ","127 63 90 ","127 103 63 ","85 127 63 ","63 127 107 ","63 81 127 ","112 63 127 ","127 63 76 ","127 116 63 ","72 127 63 ","63 127 120 ","63 68 127 ","125 63 127 "};
 char *convergence_strings[MAX_ITERATIONS];
 
-BlockBuffer *buffers = NULL;
+BlockBuffer *buffers=NULL;
 
 int main(int argc, char *argv[]) {
-
+  //argument parsing------------------------------------------------------------------
   if (argc < 2) {
     fprintf(stderr, "Usage: %s [-t <num_threads>] [-l <num_lines>] <degree>\n",
             argv[0]);
@@ -49,7 +50,6 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  // Parse command line arguments
   bool degree_set = false;
   for (int i = 1; i < argc; ++i) {
 
@@ -91,6 +91,7 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
+  //initializing variables------------------------------------------------------------------
   newton_c1 = ((double)d - 1.0) / (double)d;
   newton_c2= 1/((double)d);
   delta_arg=2*M_PI / d;
@@ -107,14 +108,16 @@ int main(int argc, char *argv[]) {
   cnd_init(&cond);
 
   // allocate buffers
-  buffers = malloc(n_buffers * sizeof(BlockBuffer));
-  for (int i = 0; i <n_buffers; ++i) {
-    buffers[i].data = malloc(row_size * sizeof(_Complex double));
-    buffers[i].size = row_size;
-    atomic_init(&buffers[i].state, FREE);
-    buffers[i].block_index= -1;
-  }
+  buffers=malloc(n_buffers*sizeof(BlockBuffer));
+  for (int i =0; i<n_buffers; ++i) {
+    buffers[i].att_data=malloc(BLOCKSIZE*sizeof(TYPE_ATTR));
+    buffers[i].con_data=malloc(BLOCKSIZE*sizeof(TYPE_CONV));
+    buffers[i].size=BLOCKSIZE;
+    atomic_init(&buffers[i].state,FREE);
+    buffers[i].block_index=-1;
 
+  }
+  //launching threads------------------------------------------------------------------------
   // launch compute threads
   thrd_t *threads = malloc(n_threads * sizeof(thrd_t));
   ThreadArg *args = malloc(n_threads * sizeof(ThreadArg));
@@ -126,18 +129,21 @@ int main(int argc, char *argv[]) {
   // launch writer thread
   thrd_t writer;
   thrd_create(&writer,writer_func , NULL);
+  
 
+  //finish and clean--------------------------------------------------------------------------
   // join all threads
   for (int i = 0; i < n_threads; ++i)
     thrd_join(threads[i], NULL);
   thrd_join(writer, NULL);
 
 
-  printf("=== All rows complete ===\n%s", output_str);
-
   // cleanup
-  for (int i = 0; i < n_buffers; ++i)
-    free(buffers[i].data);
+  for (int i = 0; i < n_buffers; ++i){
+    free(buffers[i].att_data);
+    free(buffers[i].con_data);
+  } 
+  
   free(buffers);
   free(threads);
   free(args);

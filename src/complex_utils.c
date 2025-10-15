@@ -1,5 +1,3 @@
-#define _USE_MATH_DEFINES
-
 #include <complex.h>
 #include <math.h> 
 
@@ -19,16 +17,6 @@ _Complex double complex_pow(_Complex double z, int n) {
 
   return result;
 }
-
-/*
-double r = cabs(x);
-double theta = carg(x);          // -pi .. pi
-double k = theta * d / (2*M_PI);
-double nearest = round(k);
-if (fabs(r - 1.0) < eps && fabs(k - nearest) < eps_angle) {
-    // x is close to a root
-}
-  */
 
 
 bool is_bailout(_Complex double z){
