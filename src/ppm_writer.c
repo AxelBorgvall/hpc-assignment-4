@@ -96,13 +96,6 @@ int writer_func(void *arg){
     //add some optional linebreaks (noncorresponding to l)
     *pa++='\n';
     *pc++='\n';
-    //fwrite to file
-		/* diagnostics
-    fwrite(attbuf, 1, pa - attbuf, stdout);
-    fputc('\n', stdout);
-    fwrite(convbuf, 1, pc - convbuf, stdout);
-    fputc('\n', stdout);
-		*/
     fwrite(attbuf,1,pa-attbuf,att_fp);
     fwrite(convbuf, 1, pc-convbuf, conv_fp);
 

@@ -10,10 +10,6 @@ void free_convergence();
 void free_attractors();
 
 // PPM file handling
-int demo_func(void *arg);
-
-int demo_filewriter(void *arg);
-
 int writer_func(void *arg);
 
 
