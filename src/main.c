@@ -56,29 +56,24 @@ int main(int argc, char *argv[]) {
   bool degree_set = false;
   for (int i = 1; i < argc; ++i) {
 
-    if (strcmp(argv[i], "-t") == 0) {
-
-      if (++i >= argc) {
-        fprintf(stderr, "Error: -t requires an argument\n");
+    if (strncmp(argv[i], "-t",2) == 0) {
+      //handle threads
+      if (argv[i][2] != '\0') {
+        n_threads = atoi(argv[i] + 2);  // -t5 style
+      } else if (++i < argc) {
+        n_threads = atoi(argv[i]);      // -t 5 style
+      } else {
+        fprintf(stderr, "-t requires a value\n");
         exit(1);
       }
 
-      n_threads = (size_t)atoi(argv[i]);
-      if (n_threads == 0) {
-        fprintf(stderr, "Error: Number of threads must be greater than 0\n");
-        exit(1);
-      }
-
-    } else if (strcmp(argv[i], "-l") == 0) {
-      if (++i >= argc) {
-        fprintf(stderr, "Error: -l requires an argument\n");
-        exit(1);
-      }
-
-      l = (size_t)atoi(argv[i]);
-      if (l <= 0) {
-        fprintf(stderr,
-                "Error: Number of lines must be at least 1\n");
+    } else if (strncmp(argv[i], "-l",2) == 0) {
+      if (argv[i][2] != '\0') {
+        l = atoi(argv[i] + 2);          // -l1000 style
+      } else if (++i < argc) {
+        l = atoi(argv[i]);              // -l 1000 style
+      } else {
+        fprintf(stderr, "-l requires a value\n");
         exit(1);
       }
 

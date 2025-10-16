@@ -8,5 +8,6 @@ lc.py
 con.py
 newton_convergence_x*.png
 newton_attractors_x*.png
+submit.tar.gz
 comp.py
 .aider*
