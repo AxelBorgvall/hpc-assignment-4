@@ -102,7 +102,7 @@ int newton_loop(void *arg){
         int r=getroot_arg(x);
 
         if (r!=-1){
-          block->con_data[p_ind]=i+1;
+          block->con_data[p_ind]=i;
           block->att_data[p_ind]=r;
           break;
         }

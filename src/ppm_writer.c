@@ -89,6 +89,7 @@ int writer_func(void *arg){
       int cidx = ((int)block->con_data[i]);
       memcpy(pa,attractor_strings[aidx],STRING_LENGTH);
       memcpy(pc, convergence_strings[cidx],STRING_LENGTH);
+       
       pa+=STRING_LENGTH;
       pc+=STRING_LENGTH; 
     }
